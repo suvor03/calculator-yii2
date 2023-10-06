@@ -27,7 +27,22 @@ class HelloController extends Controller
      */
     public function actionIndex($message = 'hello world')
     {
-        echo $message . "\n";
+        $counter = 0;
+        $basePath = __DIR__ . '/../runtime/queue.job';
+        while (true)
+        {           
+            echo 'Текущая итерация: ' . $counter . PHP_EOL;
+            
+            if (file_exists($basePath) === true)
+            {
+                $data = file_get_contents($basePath);
+                echo $data . PHP_EOL;
+                unlink($basePath);
+            }
+            
+            sleep(1);
+            $counter++;
+        }
 
         return ExitCode::OK;
     }

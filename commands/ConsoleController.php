@@ -53,8 +53,8 @@ class ConsoleController extends Controller
 
 		  $totalCost = null;
 		  foreach ($priceTable as $price) {
-			  if (isset($price[$tonnage])) {
-				  $totalCost = $price[$tonnage];
+			  if (isset($price[$this->tonnage])) {
+				  $totalCost = $price[$this->tonnage];
 				  break;
 			 }
 		  }

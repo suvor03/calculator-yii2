@@ -21,7 +21,6 @@ $this->params['breadcrumbs'][] = $this->title;
 		</h1> <br>
 
 		<?php $form = ActiveForm::begin(['action' => ['calculator/submit-form']]); ?>
-
 		<?= $form->field($model, 'month')->dropDownList([
 			'' => '',
 			'Январь' => 'Январь',
@@ -31,14 +30,12 @@ $this->params['breadcrumbs'][] = $this->title;
 			'Октябрь' => 'Октябрь',
 			'Ноябрь' => 'Ноябрь',
 		]) ?>
-
 		<?= $form->field($model, 'rawMaterial')->dropDownList([
 			'' => '',
 			'Шрот' => 'Шрот',
 			'Жмых' => 'Жмых',
 			'Соя' => 'Соя',
 		]) ?>
-
 		<?= $form->field($model, 'tonnage')->dropDownList([
 			'' => '',
 			'25' => '25 (т)',
@@ -46,7 +43,6 @@ $this->params['breadcrumbs'][] = $this->title;
 			'75' => '75 (т)',
 			'100' => '100 (т)',
 		]) ?>
-
 		<div class="form-group">
 			<?= Html::submitButton('Рассчитать', ['class' => 'btn btn-outline-primary']) ?>
 		</div>

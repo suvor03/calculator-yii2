@@ -16,37 +16,13 @@ class CalculatePriceController extends Controller
 
 		$prices = require(Yii::getAlias('@app/config/prices.php'));
 
-		$priceTable = $prices[$type][$month];
+		$totalCost = $prices[$type][$month][$tonnage];
 
-		$totalCost = null;
-		foreach ($priceTable as $price) {
-			if (isset($price[$tonnage])) {
-				$totalCost = $price[$tonnage];
-				break;
-			}
-		}
-
-		$priceList = [];
-
-		foreach ($prices as $rawType => $months) {
-			if ($rawType === $type) {
-				$priceList[$type] = [];
-
-				foreach ($months as $month => $values) {
-					$priceList[$type][$month] = [];
-
-					foreach ($values as $value) {
-						$tonnage = key($value);
-						$price = $value[$tonnage];
-
-						$priceList[$type][$month][$tonnage] = $price;
-					}
-				}
-			}
-		}
+		$priceList = $prices[$type];
 
 		$response = [
 			'price' => $totalCost,
+			'type' => $type,
 			'price_list' => $priceList
 		];
 

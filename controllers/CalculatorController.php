@@ -22,7 +22,7 @@ class CalculatorController extends Controller
 		$model = new CalculatorForm();
 
 		if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-			Yii::$app->session->setFlash('success','Валидация формы пройдена успешно!');
+			Yii::$app->session->setFlash('success', 'Валидация формы пройдена успешно!');
 			$data = [
 				'Месяц' => $model->month,
 				'Тип сырья' => $model->rawMaterial,
@@ -46,8 +46,8 @@ class CalculatorController extends Controller
 
 			$totalCost = null;
 			foreach ($priceTable as $price) {
-				if ($price['тоннаж'] == $tonnage) {
-					$totalCost = $price['price'];
+				if (isset($price[$tonnage])) {
+					$totalCost = $price[$tonnage];
 					break;
 				}
 			}

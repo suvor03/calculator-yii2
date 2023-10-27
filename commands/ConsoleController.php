@@ -51,13 +51,13 @@ class ConsoleController extends Controller
 
         $priceTable = $prices[$this->type][$this->month];
 
-			$totalCost = null;
-			foreach ($priceTable as $price) {
-				if ($price['тоннаж'] == $this->tonnage) {
-					$totalCost = $price['price'];
-					break;
-				}
-			}
+		  $totalCost = null;
+		  foreach ($priceTable as $price) {
+			  if (isset($price[$tonnage])) {
+				  $totalCost = $price[$tonnage];
+				  break;
+			 }
+		  }
 
         if (empty($this->month) || empty($this->type) || empty($this->tonnage)) {
             echo "Ошибка: Все опции обязательны к заполнению.\n";

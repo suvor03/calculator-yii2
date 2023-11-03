@@ -4,6 +4,10 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
+use app\models\Month;
+use app\models\RawType;
+use app\models\Tonnage;
 
 $this->title = 'Калькулятор стоимости доставки сырья';
 $this->params['breadcrumbs'][] = $this->title;
@@ -21,28 +25,18 @@ $this->params['breadcrumbs'][] = $this->title;
 		</h1> <br>
 
 		<?php $form = ActiveForm::begin(['action' => ['calculator/submit-form']]); ?>
-		<?= $form->field($model, 'month')->dropDownList([
-			'' => '',
-			'Январь' => 'Январь',
-			'Февраль' => 'Февраль',
-			'Август' => 'Август',
-			'Сентябрь' => 'Сентябрь',
-			'Октябрь' => 'Октябрь',
-			'Ноябрь' => 'Ноябрь',
-		]) ?>
-		<?= $form->field($model, 'rawMaterial')->dropDownList([
-			'' => '',
-			'Шрот' => 'Шрот',
-			'Жмых' => 'Жмых',
-			'Соя' => 'Соя',
-		]) ?>
-		<?= $form->field($model, 'tonnage')->dropDownList([
-			'' => '',
-			'25' => '25 (т)',
-			'50' => '50 (т)',
-			'75' => '75 (т)',
-			'100' => '100 (т)',
-		]) ?>
+		<?= $form->field($model, 'month')->dropDownList(
+			ArrayHelper::map(Month::find()->all(), 'name', 'name'),
+			['prompt' => '']
+		) ?>
+		<?= $form->field($model, 'rawType')->dropDownList(
+			ArrayHelper::map(RawType::find()->all(), 'name', 'name'),
+			['prompt' => '']
+		) ?>
+		<?= $form->field($model, 'tonnage')->dropDownList(
+			ArrayHelper::map(Tonnage::find()->all(), 'value', 'value'),
+			['prompt' => '']
+		) ?>
 		<div class="form-group">
 			<?= Html::submitButton('Рассчитать', ['class' => 'btn btn-outline-primary']) ?>
 		</div>

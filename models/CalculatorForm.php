@@ -7,13 +7,13 @@ use yii\base\Model;
 class CalculatorForm extends Model
 {
 	public $month;
-	public $rawMaterial;
+	public $rawType;
 	public $tonnage;
 
 	public function rules()
 	{
 		return [
-			[['month', 'rawMaterial', 'tonnage'], 'required'],
+			[['month', 'rawType', 'tonnage'], 'required'],
 		];
 	}
 }

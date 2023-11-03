@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = $this->title;
 			<tbody>
 				<tr>
 					<td>
-						<?= $rawMaterial ?>
+						<?= $rawType ?>
 					</td>
 					<td>
 						<?= $month ?>

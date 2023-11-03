@@ -5,18 +5,10 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\CalculatorForm;
+use app\models\Price;
 
 class CalculatorController extends Controller
 {
-	public function actionCalculator()
-	{
-		$model = new CalculatorForm();
-
-		return $this->render('calculator', [
-			'model' => $model,
-		]);
-	}
-
 	public function actionSubmitForm()
 	{
 		$model = new CalculatorForm();
@@ -25,7 +17,7 @@ class CalculatorController extends Controller
 			Yii::$app->session->setFlash('success', 'Валидация формы пройдена успешно!');
 			$data = [
 				'Месяц' => $model->month,
-				'Тип сырья' => $model->rawMaterial,
+				'Тип сырья' => $model->rawType,
 				'Тоннаж' => $model->tonnage,
 			];
 
@@ -35,25 +27,31 @@ class CalculatorController extends Controller
 			}
 			fclose($file);
 
-			
-			$rawMaterial = $model->rawMaterial;
+
+			$rawType = $model->rawType;
 			$month = $model->month;
 			$tonnage = $model->tonnage;
 
-			$prices = require(Yii::getAlias('@app/config/prices.php'));
+			$totalCost = Price::find()
+				->select('price')
+				->innerJoin('month', 'price.month_id = month.id')
+				->innerJoin('tonnage', 'price.tonnage_id = tonnage.id')
+				->innerJoin('raw_type', 'price.raw_type_id = raw_type.id')
+				->where([
+					'month.name' => $month,
+					'tonnage.value' => $tonnage,
+					'raw_type.name' => $rawType,
+				])
+				->one();
 
-			$priceTable = $prices[$rawMaterial][$month];
-
-			$totalCost = null;
-			foreach ($priceTable as $price) {
-				if (isset($price[$tonnage])) {
-					$totalCost = $price[$tonnage];
-					break;
-				}
+			if ($totalCost !== null) {
+				$totalCost = $totalCost->price;
+			} else {
+				Yii::$app->session->setFlash('error', 'Стоимость не найдена!');
 			}
 
 			return $this->render('../site/result', [
-				'rawMaterial' => $rawMaterial,
+				'rawType' => $rawType,
 				'month' => $month,
 				'tonnage' => $tonnage,
 				'totalCost' => $totalCost,

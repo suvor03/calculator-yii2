@@ -6,6 +6,10 @@ use yii\db\ActiveRecord;
 
 class RawType extends ActiveRecord
 {
+	/**
+	 * Summary of rules
+	 * @return array
+	 */
 	public function rules()
 	{
 		return [

@@ -8,10 +8,14 @@ use app\models\Price;
 
 class ConsoleController extends Controller
 {
-	public $month;
-	public $type;
-	public $tonnage;
+	public string $month;
+	public string $type;
+	public int $tonnage;
 
+	/**
+	 * Summary of actionCalc
+	 * @return never
+	 */
 	public function actionCalc()
 	{
 		$counter = 0;
@@ -28,15 +32,22 @@ class ConsoleController extends Controller
 			sleep(2);
 			$counter++;
 		}
-
-		return ExitCode::OK;
 	}
 
+	/**
+	 * Summary of options
+	 * @param mixed $actionID
+	 * @return array
+	 */
 	public function options($actionID)
 	{
 		return ['month', 'type', 'tonnage'];
 	}
 
+	/**
+	 * Summary of actionCost
+	 * @return int
+	 */
 	public function actionCost()
 	{
 		$totalCost = Price::find()

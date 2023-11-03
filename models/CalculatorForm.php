@@ -6,10 +6,14 @@ use yii\base\Model;
 
 class CalculatorForm extends Model
 {
-	public $month;
-	public $rawType;
-	public $tonnage;
+	public string $month = '';
+	public string $rawType = '';
+	public int $tonnage = 0;
 
+	/**
+	 * Summary of rules
+	 * @return array
+	 */
 	public function rules()
 	{
 		return [

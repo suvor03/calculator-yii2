@@ -6,6 +6,10 @@ use yii\db\ActiveRecord;
 
 class Price extends ActiveRecord
 {
+	/**
+	 * Summary of rules
+	 * @return array
+	 */
 	public function rules()
 	{
 		return [

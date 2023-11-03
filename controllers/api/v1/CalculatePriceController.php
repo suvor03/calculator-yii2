@@ -9,6 +9,10 @@ use app\models\Price;
 
 class CalculatePriceController extends Controller
 {
+	/**
+	 * Summary of actionIndex
+	 * @return array
+	 */
 	public function actionIndex()
 	{
 		$month = Yii::$app->request->get('month');

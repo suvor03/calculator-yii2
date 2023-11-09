@@ -4,7 +4,7 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-class RawType extends ActiveRecord
+class Months extends ActiveRecord
 {
 	/**
 	 * Summary of rules
@@ -14,7 +14,7 @@ class RawType extends ActiveRecord
 	{
 		return [
 			[['name'], 'required'],
-			[['name'], 'string', 'max' => 50],
+			[['name'], 'string', 'max' => 10],
 			[['name'], 'unique'],
 		];
 	}

@@ -5,7 +5,7 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\CalculatorForm;
-use app\models\Price;
+use app\models\Prices;
 
 class CalculatorController extends Controller
 {
@@ -27,26 +27,19 @@ class CalculatorController extends Controller
 			}
 			fclose($file);
 
-
 			$rawType = $model->rawType;
 			$month = $model->month;
 			$tonnage = $model->tonnage;
 
-			$totalCost = Price::find()
+			$totalCost = Prices::find()
 				->select('price')
-				->innerJoin('month', 'price.month_id = month.id')
-				->innerJoin('tonnage', 'price.tonnage_id = tonnage.id')
-				->innerJoin('raw_type', 'price.raw_type_id = raw_type.id')
-				->where([
-					'month.name' => $month,
-					'tonnage.value' => $tonnage,
-					'raw_type.name' => $rawType,
-				])
-				->one();
+				->innerJoinWith('months')
+				->innerJoinWith('rawTypes')
+				->innerJoinWith('tonnages')
+				->where(['months.name' => $month, 'raw_types.name' => $rawType, 'tonnages.value' => $tonnage])
+				->scalar();
 
-			if ($totalCost !== null) {
-				$totalCost = $totalCost->price;
-			} else {
+			if ($totalCost == null) {
 				Yii::$app->session->setFlash('error', 'Стоимость не найдена!');
 			}
 

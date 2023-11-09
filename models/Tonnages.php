@@ -4,7 +4,7 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
-class Tonnage extends ActiveRecord
+class Tonnages extends ActiveRecord
 {
 	/**
 	 * Summary of rules

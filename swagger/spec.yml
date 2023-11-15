@@ -1,0 +1,278 @@
+openapi: "3.0.3"
+info:
+  title: API Калькулятор расчета стоимости доставки
+  version: 1.0.0
+  description: Калькулятор расчета стоимости доставки - сервис расчета стоимости доставки
+  contact:
+    name: Суворов Дмитрий
+    url: "https://github.com/suvor03"
+tags:
+  - name: calculate
+    description: Расчет стоимостей
+  - name: months
+    description: Регистр месяцев
+  - name: tonnages
+    description: Регистр тоннажей
+  - name: types
+    description: Регистр типов сырья
+  - name: prices
+    description: Регистр стоимостей доставки
+paths:
+  /api/v1/months:
+    get:
+      tags:
+        - months
+      summary: Получить список месяцев
+      responses:
+        '200':
+          $ref: '#/components/responses/MonthSuccessfulResponse'
+        '401':
+          description: Не авторизован
+    post:
+      tags:
+        - months
+      summary: Добавить месяц
+      requestBody:
+        $ref: '#/components/requestBodies/MonthRequestBody'
+      responses:
+        '201':
+          description: Успешное добавление
+        '401':
+          description: Не авторизован
+  /api/v1/months/delete:          
+    delete:
+      tags:
+        - months
+      summary: Удалить месяц по имени
+      parameters:
+        - $ref: '#/components/parameters/MonthParameter'
+      responses:
+        '204':
+          description: Успешное удаление
+        '401':
+          description: Не авторизован
+          
+  /api/v1/tonnages:
+    get:
+      tags:
+        - tonnages
+      summary: Получить список тоннажей
+      responses:
+        '200':
+          $ref: '#/components/responses/TonnageSuccessfulResponse'
+        '401':
+          description: Не авторизован
+    post:
+      tags:
+        - tonnages
+      summary: Добавить тоннаж
+      requestBody:
+        $ref: '#/components/requestBodies/TonnageRequestBody'
+      responses:
+        '201':
+          description: Успешное добавление
+        '401':
+          description: Не авторизован
+  /api/v1/tonnages/delete:        
+    delete:
+      tags:
+        - tonnages
+      summary: Удалить тоннаж по значению
+      parameters:
+        - $ref: '#/components/parameters/TonnageParameter'
+      responses:
+        '204':
+          description: Успешное удаление
+        '401':
+          description: Не авторизован
+          
+  /api/v1/types:
+    get:
+      tags:
+        - types
+      summary: Получить список типов сырья
+      responses:
+        '200':
+          $ref: '#/components/responses/RawTypeSuccessfulResponse'
+        '401':
+          description: Не авторизован
+    post:
+      tags:
+        - types
+      summary: Добавить тип сырья
+      requestBody:
+        $ref: '#/components/requestBodies/RawTypeRequestBody'
+      responses:
+        '201':
+          description: Успешное добавление
+        '401':
+          description: Не авторизован
+  /api/v1/types/delete:        
+    delete:
+      tags:
+        - types
+      summary: Удалить тип сырья по значению
+      parameters:
+        - $ref: '#/components/parameters/RawTypeParameter'
+      responses:
+        '204':
+          description: Успешное удаление
+        '401':
+          description: Не авторизован
+          
+  /api/v1/calculate:
+    get:
+      tags:
+        - calculate
+      summary: Рассчитать стоимость
+      parameters:
+        - $ref: '#/components/parameters/MonthParameter'
+        - $ref: '#/components/parameters/TonnageParameter'
+        - $ref: '#/components/parameters/RawTypeParameter'
+      responses:
+        '200':
+          $ref: '#/components/responses/SuccessfulCalculationResponse'
+        '401':
+          description: Не авторизован
+  /api/v1/prices:              
+    post:
+      tags:
+        - prices
+      summary: Добавить цену
+      requestBody:
+        $ref: '#/components/requestBodies/PriceRequestBody'
+      responses:
+        '201':
+          description: Успешное добавление
+        '401':
+          description: Не авторизован
+  /api/v1/prices/update:        
+    put:
+      tags:
+        - prices
+      summary: Обновить цену
+      requestBody:
+        $ref: '#/components/requestBodies/PriceRequestBody'
+      responses:
+        '204':
+          description: Успешное обновление
+        '401':
+          description: Не авторизован      
+          
+components:
+  requestBodies:
+    MonthRequestBody:
+      description: Данные месяца для добавления
+      required: true
+      content:
+        application/json; charset=UTF-8:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Месяц"
+    TonnageRequestBody:
+      description: Данные тоннажа для добавления
+      required: true
+      content:
+        application/json; charset=UTF-8:
+          schema:
+            type: object
+            properties:
+              value:
+                type: integer
+                example: 100
+    RawTypeRequestBody:
+      description: Данные типа сырья для добавления
+      required: true
+      content:
+        application/json; charset=UTF-8:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Шрот"
+    PriceRequestBody:
+      description: Данные по стоимости
+      required: true
+      content:
+        application/json; charset=UTF-8:
+          schema:
+            type: object
+            properties:
+              raw_type_name:
+                type: string
+                example: "Соя"
+              month_name:
+                type: string
+                example: "Январь"
+              tonnage_value:
+                type: integer
+                example: 100
+              price:
+                type: integer
+                example: 176
+  
+  responses:
+    MonthSuccessfulResponse:
+      description: Успешный ответ
+      content:
+        application/json; charset=UTF-8:
+          example:
+            - "Январь"
+            - "Февраль"
+            - "Март"
+    TonnageSuccessfulResponse:
+      description: Успешный ответ
+      content:
+        application/json; charset=UTF-8:
+          example:
+            - 25
+            - 50
+            - 75
+            - 100
+    RawTypeSuccessfulResponse:
+      description: Успешный ответ
+      content:
+        application/json; charset=UTF-8:
+          example:
+            - "Жмых"
+            - "Соя"
+            - "Шрот"
+    SuccessfulCalculationResponse:
+      description: Успешный ответ
+      content:
+        application/json; charset=UTF-8:
+          example:
+            price: 100
+            price_list:
+              Жмых:
+                Январь:
+                  25: 100
+                  50: 145
+                  75: 162
+                  100: 176                
+  parameters:
+    MonthParameter:
+      name: month
+      in: query
+      required: true
+      schema:
+        type: string
+        example: "Январь"
+    TonnageParameter:
+      name: tonnage_value
+      in: query
+      required: true
+      schema:
+        type: integer
+        example: 50
+    RawTypeParameter:
+      name: type
+      in: query
+      required: true
+      schema:
+        type: string
+        example: "Шрот"

@@ -51,7 +51,18 @@ $config = [
 			'showScriptName' => false,
 			'enableStrictParsing' => false,
 			'rules' => [
-				['class' => 'yii\rest\UrlRule', 'controller' => 'api/v1/calculate-price'],
+				[
+					 'class' => 'yii\rest\UrlRule',
+					 'controller' => [					  
+						  'api/v1/months',
+						  'api/v1/types',
+						  'api/v1/tonnages',
+						  'api/v1/prices',
+						  'api/v1/calculate',
+					 ],
+				],
+				'api/v1/json-schema' => 'api/v1/json-schema/get-spec',
+				
 		  ],
 		],
 	],

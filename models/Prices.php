@@ -6,13 +6,21 @@ use yii\db\ActiveRecord;
 
 class Prices extends ActiveRecord
 {
+ /**
+  * Summary of primaryKey
+  * @return array
+  */
+	public static function primaryKey()
+    {
+        return ['id'];
+    }
 	/**
 	 * Summary of getMonths
 	 * @return \yii\db\ActiveQuery
 	 */
 	public function getMonths()
 	{
-		return $this->hasOne(Months::class, ['id' => 'month_id']);
+		return $this->hasOne(Months::class, ['name' => 'month_name']);
 	}
 	/**
 	 * Summary of getRawTypes
@@ -20,7 +28,7 @@ class Prices extends ActiveRecord
 	 */
 	public function getRawTypes()
 	{
-		return $this->hasOne(RawTypes::class, ['id' => 'raw_type_id']);
+		return $this->hasOne(RawTypes::class, ['name' => 'raw_type_name']);
 	}
 	/**
 	 * Summary of getTonnages
@@ -28,7 +36,7 @@ class Prices extends ActiveRecord
 	 */
 	public function getTonnages()
 	{
-		return $this->hasOne(Tonnages::class, ['id' => 'tonnage_id']);
+		return $this->hasOne(Tonnages::class, ['value' => 'tonnage_value']);
 	}
 	/**
 	 * Summary of rules
@@ -37,10 +45,10 @@ class Prices extends ActiveRecord
 	public function rules()
 	{
 		return [
-			[['value'], 'required'],
-			[['value'], 'number'],
-			[['value'], 'compare', 'compareValue' => 0, 'operator' => '>', 'message' => 'Значение должно быть больше нуля'],
-			[['month_id', 'raw_type_id', 'tonnage_id', 'price'], 'required'],
+			[['price'], 'required'],
+			[['price'], 'number'],
+			[['price'], 'compare', 'compareValue' => 0, 'operator' => '>', 'message' => 'Значение должно быть больше нуля'],
+			[['month_name', 'raw_type_name', 'tonnage_value', 'price'], 'required'],
 		];
 	}
 }

@@ -35,7 +35,7 @@ class CalculateController extends ActiveController
 		$month = Yii::$app->request->get('month');
 		$tonnage = Yii::$app->request->get('tonnage');
 		$type = Yii::$app->request->get('type');
-		
+
 		$price = Prices::find()
 			->select('price')
 			->where([
@@ -51,19 +51,30 @@ class CalculateController extends ActiveController
 			->innerJoinWith('rawTypes')
 			->innerJoinWith('tonnages')
 			->where(['raw_types.name' => $type])
-			->where(['months.name' => $month])
+			->orderBy(['months.id' => SORT_ASC])
 			->asArray()
 			->all();
 
-		$formattedPriceList = [];
-		foreach ($priceList as $item) {
-			$formattedPriceList[$type][$item['month']][$item['tonnage']] = $item['price'];
-		}
-
 		$response = [
 			'price' => $price,
-			'price_list' => $formattedPriceList
+			'price_list' => []
 		];
+
+		foreach ($priceList as $item) {
+			$itemMonth = $item['month'];
+			$itemTonnage = $item['tonnage'];
+			$price = $item['price'];
+
+			$response['price_list'][$type][$itemMonth][$itemTonnage] = $price;
+
+			if ($itemMonth === $month && $itemTonnage === $tonnage) {
+				$response['price'] = $price;
+			}
+		}
+
+		foreach ($response['price_list'][$type] as &$monthData) {
+			ksort($monthData);
+	  }
 
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		return $response;

@@ -9,6 +9,9 @@ nbproject
 .project
 .settings
 
+#ENV
+.env
+
 # windows thumbnail cache
 Thumbs.db
 

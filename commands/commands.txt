@@ -1,0 +1,1 @@
+php yii console/calculate --month="Ноябрь" --type="Соя" --tonnage=75

@@ -8,8 +8,8 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
 use app\models\CalculatorForm;
+use app\models\AuthForm;
 
 class SiteController extends Controller
 {
@@ -66,73 +66,76 @@ class SiteController extends Controller
 	}
 
 	/**
-	 * Login action.
-	 *
-	 * @return Response|string
-	 */
-	public function actionLogin()
-	{
-		if (!Yii::$app->user->isGuest) {
-			return $this->goHome();
-		}
-
-		$model = new LoginForm();
-		if ($model->load(Yii::$app->request->post()) && $model->login()) {
+     * Login action.
+     *
+     * @return Response|string
+     */
+    public function actionLogin()
+    {
+        $model = new LoginForm();
+        if ($model->load(Yii::$app->request->post()) && $model->register()) {
+			Yii::$app->session->setFlash('success', [
+				 'message' => 'Регистрация прошла успешно! Теперь ваша роль - user. Вы можете выполнить <a href="' . Yii::$app->urlManager->createUrl(['site/auth']) . '">вход</a>.',
+				 'options' => ['class' => 'alert-success alert-dismissible text-dark'],
+			]);
+	  
+			
 			return $this->goBack();
-		}
+	  }
 
-		$model->password = '';
-		return $this->render('login', [
-			'model' => $model,
-		]);
-	}
+        $model->password = '';
+        return $this->render('login', [
+            'model' => $model,
+        ]);
+    }
 
-	/**
-	 * Logout action.
-	 *
-	 * @return Response
-	 */
-	public function actionLogout()
-	{
-		Yii::$app->user->logout();
+	 public function actionAuth()
+{
+    $model = new AuthForm();
 
-		return $this->goHome();
-	}
+    if ($model->load(Yii::$app->request->post()) && $model->login()) {
+        Yii::$app->session->setFlash('success', [
+            'message' => 'Здравствуйте, ' . Yii::$app->user->identity->username . ', вы авторизовались в системе расчета стоимости доставки. Теперь все ваши расчеты будут сохранены для последующего просмотра в <a href="' . Yii::$app->urlManager->createUrl(['calculation/history']) . '">журнале расчетов</a>.',
+            'options' => ['class' => 'alert-success alert-dismissible text-dark'],
+        ]);
+        return $this->render('calculator');
+    } else {
+        if (Yii::$app->request->isPost) {
+            Yii::$app->session->setFlash('error', 'Неверный email или пароль! Попробуйте еще раз');
+        }
+    }
 
-	/**
-	 * Displays contact page.
-	 *
-	 * @return Response|string
-	 */
-	public function actionContact()
-	{
-		$model = new ContactForm();
-		if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-			Yii::$app->session->setFlash('contactFormSubmitted');
+    return $this->render('auth', [
+        'model' => $model,
+    ]);
+}
 
-			return $this->refresh();
-		}
-		return $this->render('contact', [
-			'model' => $model,
-		]);
-	}
+	 public function actionHistory()
+	 {
+		return $this->render('history');
+	 }
 
-	/**
-	 * Displays about page.
-	 *
-	 * @return string
-	 */
-	public function actionAbout()
-	{
-		return $this->render('about');
-	}
-
-	public function actionCalculator()
+	 
+	 public function actionCalculator()
 	{
 		$model = new CalculatorForm();
 
-		return $this->render('calculator', [
-			'model' => $model,
-		]);
+    return $this->render('calculator', [
+        'model' => $model,
+    ]);
 	}
+	 
+	 /**
+     * Logout action.
+     *
+     * @return Response
+     */
+    public function actionLogout()
+    {
+        Yii::$app->user->logout();
+
+        return $this->goHome();
+    }
+
+
 }

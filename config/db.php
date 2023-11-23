@@ -1,16 +1,10 @@
 <?php
-return [
+return [	  
 	'class' => 'yii\db\Connection',
-	'dsn'=> 'mysql:host=' . getenv('DB_HOST') . ';dbname=' . getenv('DB_NAME'),
-	'username' => getenv('DB_USER'),
-	'password' => getenv('DB_PASSWORD'),
+	'dsn' => 'mysql:host=127.0.0.1;dbname=calculator',
+	'username' => 'root',
+	'password' => '',
 	'charset' => 'utf8',
-	  
-	// 'class' => 'yii\db\Connection',
-	// 'dsn' => 'mysql:host=127.0.0.1;dbname=calculator',
-	// 'username' => 'root',
-	// 'password' => '',
-	// 'charset' => 'utf8',
 
 	// Schema cache options (for production environment)
 	//'enableSchemaCache' => true,

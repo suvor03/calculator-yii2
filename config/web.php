@@ -19,6 +19,9 @@ $config = [
 				'application/json' => 'yii\web\JsonParser',
 		  ]
 		],
+		'authManager' => [
+			'class' => 'yii\rbac\DbManager',
+	  ],
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
 		],
@@ -59,13 +62,20 @@ $config = [
 						  'api/v1/tonnages',
 						  'api/v1/prices',
 						  'api/v1/calculate',
+						  'api/v1/history'
 					 ],
 				],
 				'api/v1/json-schema' => 'api/v1/json-schema/get-spec',
-				
+				'user/update/<id:\d+>' => 'user/update',
+            'user/delete/<id:\d+>' => 'user/delete',
 		  ],
 		],
 	],
+	'modules' => [
+		'admin' => [
+			 'class' => 'mdm\admin\Module',
+		],
+  ],
 	'params' => $params,
 ];
 

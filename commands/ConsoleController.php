@@ -75,7 +75,7 @@ class ConsoleController extends Controller
 			} else if ($this->type == "Соя") {
 				echo "введенные параметры:\nмесяц - {$this->month}\nтип - {$this->type}\nтоннаж - {$this->tonnage}\nрезультат - $result\n\n{$this->drawSoyTable()}";
 			}
-			
+
 		}
 
 		return ExitCode::OK;

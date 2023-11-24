@@ -17,11 +17,11 @@ $config = [
 			'cookieValidationKey' => 'qMA9K70JByOfN--nupsezyjgB6N9xfL3',
 			'parsers' => [
 				'application/json' => 'yii\web\JsonParser',
-		  ]
+			]
 		],
 		'authManager' => [
 			'class' => 'yii\rbac\DbManager',
-	  ],
+		],
 		'cache' => [
 			'class' => 'yii\caching\FileCache',
 		],
@@ -55,27 +55,27 @@ $config = [
 			'enableStrictParsing' => false,
 			'rules' => [
 				[
-					 'class' => 'yii\rest\UrlRule',
-					 'controller' => [					  
-						  'api/v1/months',
-						  'api/v1/types',
-						  'api/v1/tonnages',
-						  'api/v1/prices',
-						  'api/v1/calculate',
-						  'api/v1/history'
-					 ],
+					'class' => 'yii\rest\UrlRule',
+					'controller' => [
+						'api/v1/months',
+						'api/v1/types',
+						'api/v1/tonnages',
+						'api/v1/prices',
+						'api/v1/calculate',
+						'POST api/v1/history' => 'history/create'
+					],
 				],
 				'api/v1/json-schema' => 'api/v1/json-schema/get-spec',
 				'user/update/<id:\d+>' => 'user/update',
-            'user/delete/<id:\d+>' => 'user/delete',
-		  ],
+				'user/delete/<id:\d+>' => 'user/delete',
+			],
 		],
 	],
 	'modules' => [
 		'admin' => [
-			 'class' => 'mdm\admin\Module',
+			'class' => 'mdm\admin\Module',
 		],
-  ],
+	],
 	'params' => $params,
 ];
 

@@ -74,7 +74,7 @@ class CalculateController extends ActiveController
 
 		foreach ($response['price_list'][$type] as &$monthData) {
 			ksort($monthData);
-	  }
+		}
 
 		Yii::$app->response->format = Response::FORMAT_JSON;
 		return $response;

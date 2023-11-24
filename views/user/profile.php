@@ -32,15 +32,12 @@ $this->title = 'Профиль';
 				?>
 			</button>
 			<?php
-			// Выводим имя и почту авторизованного пользователя
 			if (!Yii::$app->user->isGuest) {
 				$user = Yii::$app->user->identity;
 				echo '<p class="name mt-3">' . $user->username . ' - ' . '<span class="email">' . $user->email . '</span></p>';
 
-				// Получаем id пользователя
 				$userId = $user->id;
 
-				// Получаем роль пользователя по его id
 				$authManager = Yii::$app->authManager;
 				$roles = $authManager->getRolesByUser($userId);
 

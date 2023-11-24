@@ -42,17 +42,17 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
 		'items' => [
 			['label' => 'Калькулятор', 'url' => ['/site/calculator'], 'linkOptions' => ['class' => 'btn btn-outline-success text-light mx-5 px-3']],
 			Yii::$app->user->isGuest ?
-			['label' => 'Войти в систему', 'url' => ['site/auth'], 'linkOptions' => ['class' => 'btn btn-outline-secondary text-light']]:
+			['label' => 'Войти в систему', 'url' => ['site/auth'], 'linkOptions' => ['class' => 'btn btn-outline-secondary text-light']] :
 			[
 				'label' => Yii::$app->user->identity->username,
 				'items' => [
 					['label' => 'Профиль', 'url' => ['user/profile']],
-                ['label' => 'История расчетов', 'url' => ['calculation/history']],
-                (Yii::$app->user->can('administrator') || Yii::$app->user->can('super_admin')) ? 
-                    ['label' => 'Пользователи', 'url' => ['user/list']] :
-						  
-					'<div class="dropdown-divider"></div>',	 	   
-                ['label' => 'Выход', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
+					['label' => 'История расчетов', 'url' => ['calculation/history']],
+					(Yii::$app->user->can('administrator') || Yii::$app->user->can('super_admin')) ?
+					['label' => 'Пользователи', 'url' => ['user/list']] :
+
+					'<div class="dropdown-divider"></div>',
+					['label' => 'Выход', 'url' => ['/site/logout'], 'linkOptions' => ['data-method' => 'post']],
 				],
 				'options' => ['class' => 'nav-item-auth text-center']
 			],
@@ -71,7 +71,8 @@ $this->registerMetaTag(['name' => 'keywords', 'content' => $this->params['meta_k
 	<footer id="footer" class="footer-dark bg-dark mt-auto py-3" style='background-color: #a2b6df;'>
 		<div class="container">
 			<div class="row text-muted">
-				<div class="col-md-6 text-center text-md-start text-gray">&copy;ЭФКО Цифровые решения
+				<div class="col-md-6 text-center text-md-start text-light">&copy;ЭФКО
+					Цифровые решения
 					<?= date('Y') ?>
 				</div>
 			</div>

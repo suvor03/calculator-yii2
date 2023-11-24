@@ -5,11 +5,7 @@ namespace app\controllers\api\v1;
 use Yii;
 use yii\web\Controller;
 use app\models\History;
-use app\models\Months;
-use app\models\RawTypes;
-use app\models\Tonnages;
-use app\models\Prices;
-use app\models\User;
+use yii\web\Response;
 
 class HistoryController extends Controller
 {
@@ -41,27 +37,24 @@ class HistoryController extends Controller
 	}
 
 	public function actionCreate()
-{
-    $history = new History();
-    $history->username = Yii::$app->getRequest()->getBodyParam('username');
-    $history->month_name = Yii::$app->getRequest()->getBodyParam('month_name');
-    $history->raw_type_name = Yii::$app->getRequest()->getBodyParam('raw_type_name');
-    $history->tonnage_value = Yii::$app->getRequest()->getBodyParam('tonnage_value');
-    $history->price = Yii::$app->getRequest()->getBodyParam('price');
+	{
+		Yii::$app->response->format = Response::FORMAT_JSON;
+		$model = new History();
 
-    if ($history->validate()) { // Проверка валидности данных
-        if ($history->save()) {
-            Yii::$app->getResponse()->setStatusCode(201);
-            return $history;
-        } else {
-            Yii::$app->getResponse()->setStatusCode(500); // Указываем статус 500 в случае ошибки сервера
-            return $history->getErrors(); // Возвращаем информацию об ошибках
-        }
-    } else {
-        Yii::$app->getResponse()->setStatusCode(422); // Указываем статус 422 в случае неверных данных
-        return $history->getErrors(); // Возвращаем информацию об ошибках валидации
-    }
-}
+		$postData = Yii::$app->request->getBodyParams();
+
+		if (isset($postData['month_name'], $postData['raw_type_name'], $postData['tonnage_value'], $postData['price'])) {
+			$model->attributes = $postData;
+
+			if ($model->save()) {
+				return ['success' => true, 'id' => $model->id];
+			} else {
+				return ['success' => false, 'errors' => $model->errors];
+			}
+		} else {
+			return ['success' => false, 'error' => 'Missing required fields'];
+		}
+	}
 
 	/**
 	 * Summary of actionDelete

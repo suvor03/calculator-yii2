@@ -11,12 +11,11 @@ use yii\bootstrap5\Alert;
 
 $this->title = 'Авторизация';
 
-// Проверка наличия флэш-сообщения типа 'error'
 if (Yii::$app->session->hasFlash('error')) {
 	$errorMessage = Yii::$app->session->getFlash('error');
 	echo Alert::widget([
-		 'options' => ['class' => 'alert-danger alert-dismissible'],
-		 'body' => $errorMessage,
+		'options' => ['class' => 'alert-danger alert-dismissible'],
+		'body' => $errorMessage,
 	]);
 }
 ?>
@@ -46,7 +45,8 @@ if (Yii::$app->session->hasFlash('error')) {
 						</div>
 
 						<p class="small fw-bold text-center mt-2 pt-1 mb-0">Нет аккаунта?
-							<?= Html::a('Регистрация', 'http://calculator/site/login', ['class' => 'link-danger']) ?></p>
+							<?= Html::a('Регистрация', 'http://calculator/site/login', ['class' => 'link-danger']) ?>
+						</p>
 
 						<?php ActiveForm::end(); ?>
 					</div>

@@ -61,18 +61,18 @@ class TypesController extends ActiveController
 	public function actionDelete($name)
 	{
 		$type = RawTypes::findOne(['name' => $name]);
-    if ($type) {
-        try {
-            $type->delete();
-            Yii::$app->response->statusCode = 203;
-            return ['success' => true, 'message' => 'Тип сырья успешно удален'];
-        } catch (\Exception $e) {
-            Yii::$app->response->statusCode = 500;
-            return ['success' => false, 'message' => 'Ошибка при удалении типа сырья: ' . $e->getMessage()];
-        }
-    } else {
-        Yii::$app->response->statusCode = 404;
-        return ['success' => false, 'message' => 'Тип сырья с именем ' . $name . ' не найден'];
-    }
+		if ($type) {
+			try {
+				$type->delete();
+				Yii::$app->response->statusCode = 203;
+				return ['success' => true, 'message' => 'Тип сырья успешно удален'];
+			} catch (\Exception $e) {
+				Yii::$app->response->statusCode = 500;
+				return ['success' => false, 'message' => 'Ошибка при удалении типа сырья: ' . $e->getMessage()];
+			}
+		} else {
+			Yii::$app->response->statusCode = 404;
+			return ['success' => false, 'message' => 'Тип сырья с именем ' . $name . ' не найден'];
+		}
 	}
 }

@@ -2,7 +2,7 @@
 
 use yii\grid\GridView;
 use yii\grid\ActionColumn;
-use yii\helpers\Html;
+use yii\bootstrap5\Html;
 
 ?>
 

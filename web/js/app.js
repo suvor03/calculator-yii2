@@ -64,9 +64,9 @@ new Vue({
             },
             body: JSON.stringify({
               month_name: this.selectedMonth,
+				  price: this.calculatedPrice,
               raw_type_name: this.selectedType,
-              tonnage_value: this.selectedTonnage,
-              price: this.calculatedPrice,
+              tonnage_value: this.selectedTonnage
             }),
           })
             .then((response) => {

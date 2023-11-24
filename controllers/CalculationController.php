@@ -2,9 +2,11 @@
 
 namespace app\controllers;
 
-use Yii;
 use yii\web\Controller;
 use app\models\History;
+use Yii;
+use yii\web\ForbiddenHttpException;
+use app\models\HistorySearch;
 
 
 class CalculationController extends Controller
@@ -12,30 +14,37 @@ class CalculationController extends Controller
 
 	public function actionHistory()
 	{
-		return $this->render('history');
+		$searchModel = new HistorySearch();
+		$dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+		return $this->render('history', [
+			'searchModel' => $searchModel,
+			'dataProvider' => $dataProvider,
+		]);
 	}
 
-	public function actionSaveCalculation()
+	public function actionView($id)
+{
+    $model = History::findOne($id);
+
+	 return $this->render('view', [
+		'model' => $model,
+	]);
+}
+
+
+	public function actionDelete($id)
 	{
-		$data = Yii::$app->getRequest()->getBodyParams();
+		if (Yii::$app->user->can('administrator') || Yii::$app->user->can('super_admin')) {
+			$model = History::findOne($id);
 
-		$rawTypeName = $data['raw_type_name'];
-		$monthName = $data['month_name'];
-		$tonnageValue = $data['tonnage_value'];
-		$priceValue = $data['price'];
+			if ($model !== null) {
+				$model->delete();
+			}
 
-		$model = new History();
-		$model->username = Yii::$app->user->getName();
-		$model->raw_type_name = $rawTypeName;
-		$model->tonnage_value = $tonnageValue;
-		$model->month_name = $monthName;
-		$model->price = $priceValue;
-		$model->created_at = date('Y-m-d H:i:s');
-
-		if ($model->save()) {
-			return 'Успешно';
+			return $this->redirect(['history']);
 		} else {
-			return 'Ошибка сохранения данных';
+			throw new ForbiddenHttpException('You are not allowed to perform this action.');
 		}
 	}
 }

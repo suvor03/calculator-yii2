@@ -3,11 +3,11 @@
 namespace app\controllers\api\v1;
 
 use Yii;
-use yii\web\Controller;
+use yii\rest\ActiveController;
 use app\models\History;
 use yii\web\Response;
 
-class HistoryController extends Controller
+class HistoryController extends ActiveController
 {
 	/**
 	 * Summary of modelClass
@@ -36,23 +36,25 @@ class HistoryController extends Controller
 		return $histories;
 	}
 
+	/**
+	 * Summary of actionCreate
+	 * @return History|array
+	 */
 	public function actionCreate()
 	{
-		Yii::$app->response->format = Response::FORMAT_JSON;
-		$model = new History();
-
-		$postData = Yii::$app->request->getBodyParams();
-
-		if (isset($postData['month_name'], $postData['raw_type_name'], $postData['tonnage_value'], $postData['price'])) {
-			$model->attributes = $postData;
-
-			if ($model->save()) {
-				return ['success' => true, 'id' => $model->id];
-			} else {
-				return ['success' => false, 'errors' => $model->errors];
-			}
+		$history = new History();
+		$user = Yii::$app->user->getIdentity();
+    	$username = $user->username;
+		
+		$history->load(Yii::$app->getRequest()->getBodyParams(), '');
+		$history->username = $username;
+		
+		if ($history->save()) {
+			Yii::$app->getResponse()->setStatusCode(201);
+			return $history;
 		} else {
-			return ['success' => false, 'error' => 'Missing required fields'];
+			Yii::$app->getResponse()->setStatusCode(401);
+			return $history->getErrors();
 		}
 	}
 

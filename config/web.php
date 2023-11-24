@@ -62,9 +62,16 @@ $config = [
 						'api/v1/tonnages',
 						'api/v1/prices',
 						'api/v1/calculate',
-						'POST api/v1/history' => 'history/create'
 					],
 				],
+				[
+					'class' => 'yii\rest\UrlRule',
+					'controller' => 'api/v1/history',
+					'pluralize' => false,
+					'extraPatterns' => [
+						 'POST create' => 'create',
+					],
+			  ],
 				'api/v1/json-schema' => 'api/v1/json-schema/get-spec',
 				'user/update/<id:\d+>' => 'user/update',
 				'user/delete/<id:\d+>' => 'user/delete',

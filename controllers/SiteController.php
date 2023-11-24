@@ -66,76 +66,75 @@ class SiteController extends Controller
 	}
 
 	/**
-     * Login action.
-     *
-     * @return Response|string
-     */
-    public function actionLogin()
-    {
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->register()) {
+	 * Login action.
+	 *
+	 * @return Response|string
+	 */
+	public function actionLogin()
+	{
+		$model = new LoginForm();
+		if ($model->load(Yii::$app->request->post()) && $model->register()) {
 			Yii::$app->session->setFlash('success', [
-				 'message' => 'Регистрация прошла успешно! Теперь ваша роль - user. Вы можете выполнить <a href="' . Yii::$app->urlManager->createUrl(['site/auth']) . '">вход</a>.',
-				 'options' => ['class' => 'alert-success alert-dismissible text-dark'],
+				'message' => 'Регистрация прошла успешно! Теперь ваша роль - user. Вы можете выполнить <a href="' . Yii::$app->urlManager->createUrl(['site/auth']) . '">вход</a>.',
+				'options' => ['class' => 'alert-success alert-dismissible text-dark'],
 			]);
-	  
-			
+
+
 			return $this->goBack();
-	  }
+		}
 
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-    }
+		$model->password = '';
+		return $this->render('login', [
+			'model' => $model,
+		]);
+	}
 
-	 public function actionAuth()
-{
-    $model = new AuthForm();
+	public function actionAuth()
+	{
+		$model = new AuthForm();
 
-    if ($model->load(Yii::$app->request->post()) && $model->login()) {
-        Yii::$app->session->setFlash('success', [
-            'message' => 'Здравствуйте, ' . Yii::$app->user->identity->username . ', вы авторизовались в системе расчета стоимости доставки. Теперь все ваши расчеты будут сохранены для последующего просмотра в <a href="' . Yii::$app->urlManager->createUrl(['calculation/history']) . '">журнале расчетов</a>.',
-            'options' => ['class' => 'alert-success alert-dismissible text-dark'],
-        ]);
-        return $this->render('calculator');
-    } else {
-        if (Yii::$app->request->isPost) {
-            Yii::$app->session->setFlash('error', 'Неверный email или пароль! Попробуйте еще раз');
-        }
-    }
+		if ($model->load(Yii::$app->request->post()) && $model->login()) {
+			Yii::$app->session->setFlash('success', [
+				'message' => 'Здравствуйте, ' . Yii::$app->user->identity->username . ', вы авторизовались в системе расчета стоимости доставки. Теперь все ваши расчеты будут сохранены для последующего просмотра в <a href="' . Yii::$app->urlManager->createUrl(['calculation/history']) . '">журнале расчетов</a>.',
+				'options' => ['class' => 'alert-success alert-dismissible text-dark'],
+			]);
+			return $this->render('calculator');
+		} else {
+			if (Yii::$app->request->isPost) {
+				Yii::$app->session->setFlash('error', 'Неверный email или пароль! Попробуйте еще раз');
+			}
+		}
 
-    return $this->render('auth', [
-        'model' => $model,
-    ]);
-}
+		return $this->render('auth', [
+			'model' => $model,
+		]);
+	}
 
-	 public function actionHistory()
-	 {
+	public function actionHistory()
+	{
 		return $this->render('history');
-	 }
+	}
 
-	 
-	 public function actionCalculator()
+	public function actionCalculator()
 	{
 		$model = new CalculatorForm();
 
-    return $this->render('calculator', [
-        'model' => $model,
-    ]);
+		return $this->render('calculator', [
+			'model' => $model,
+		]);
 	}
-	 
-	 /**
-     * Logout action.
-     *
-     * @return Response
-     */
-    public function actionLogout()
-    {
-        Yii::$app->user->logout();
 
-        return $this->goHome();
-    }
+	/**
+	 * Logout action.
+	 *
+	 * @return Response
+	 */
+	public function actionLogout()
+	{
+		Yii::$app->user->logout();
+
+		return $this->goHome();
+	}
 
 
 }

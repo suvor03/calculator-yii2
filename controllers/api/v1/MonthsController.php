@@ -61,18 +61,18 @@ class MonthsController extends ActiveController
 	{
 		$decodedName = urldecode($name);
 		$month = Months::findOne(['name' => $decodedName]);
-    if ($month) {
-        try {
-            $month->delete();
-            Yii::$app->response->statusCode = 203;
-            return ['success' => true, 'message' => 'Месяц успешно удален'];
-        } catch (\Exception $e) {
-            Yii::$app->response->statusCode = 500;
-            return ['success' => false, 'message' => 'Ошибка при удалении месяца: ' . $e->getMessage()];
-        }
-    } else {
-        Yii::$app->response->statusCode = 404;
-        return ['success' => false, 'message' => 'Месяц с именем ' . $name . ' не найден'];
-    }
+		if ($month) {
+			try {
+				$month->delete();
+				Yii::$app->response->statusCode = 203;
+				return ['success' => true, 'message' => 'Месяц успешно удален'];
+			} catch (\Exception $e) {
+				Yii::$app->response->statusCode = 500;
+				return ['success' => false, 'message' => 'Ошибка при удалении месяца: ' . $e->getMessage()];
+			}
+		} else {
+			Yii::$app->response->statusCode = 404;
+			return ['success' => false, 'message' => 'Месяц с именем ' . $name . ' не найден'];
+		}
 	}
 }

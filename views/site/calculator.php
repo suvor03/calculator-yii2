@@ -23,7 +23,6 @@ if (Yii::$app->session->hasFlash('success')) {
 		<div class="container-fluid h-custom">
 			<div class="row d-flex justify-content-center align-items-center h-100">
 				<div class="card-body p-md-5" style="max-width: 1000px; border-radius: 50px; background-color: #cce3d7">
-
 					<div class="my-form-container container flex flex-col items-center justify-center">
 						<div v-if="calculatedPrice !== null" class="text-center">
 							<h1 class="text-3xl md:text-5xl font-bold leading-tight text-center">

@@ -12,30 +12,20 @@ use app\models\History;
 
 $this->title = 'История расчетов';
 
-
 $dataProvider = new ActiveDataProvider([
-	'query' => History::find(), // здесь должен быть ваш запрос для получения истории расчетов
+	'query' => History::find(),
 	'pagination' => [
-		'pageSize' => 10, // количество строк на одной странице
-	],
-	'sort' => [ // сортировка по умолчанию
-		'defaultOrder' => [
-			'id' => SORT_DESC,
-		]
+		'pageSize' => 10,
 	],
 ]);
 
 echo GridView::widget([
 	'dataProvider' => $dataProvider,
+	'filterModel' => $searchModel,
 	'columns' => [
 		[
 			'attribute' => 'id',
 			'label' => 'id',
-		],
-		[
-			'attribute' => 'username',
-			'visible' => (Yii::$app->user->can('administrator') || Yii::$app->user->can('super_admin')),
-			'label' => 'Имя пользователя',
 		],
 		[
 			'attribute' => 'month_name',
@@ -52,11 +42,6 @@ echo GridView::widget([
 		[
 			'attribute' => 'price',
 			'label' => 'Стоимость',
-		],
-		[
-			'attribute' => 'created_at',
-			'label' => 'Время расчета',
-			'format' => ['datetime', 'php:Y-m-d H:i:s'],
 		],
 	],
 ]);

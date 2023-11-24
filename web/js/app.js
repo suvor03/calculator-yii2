@@ -3,7 +3,7 @@ new Vue({
   data: {
     showStartButton: true,
     isFormOpen: false,
-	 hasSentRequest: false,
+    hasSentRequest: false,
     currentStep: 1,
     selectedMonth: "",
     selectedType: "",
@@ -14,7 +14,7 @@ new Vue({
     prices: null,
     calculatedPrice: null,
     showErrorParams: false,
-	 showErrorModal: false,
+    showErrorModal: false,
     errorMessage: "",
     priceArray: [],
   },
@@ -33,45 +33,52 @@ new Vue({
           this.calculatedPrice = data.price;
           this.prices = data.price_list;
 
-			 if (this.calculatedPrice == null) {
-				this.hasSentRequest = true;
-				this.showErrorModal = true;
-			 }
-          for (let monthIndex = 0; monthIndex < this.months.length; monthIndex++) {
-				const month = this.months[monthIndex];
-	 
-				for (let tonnageIndex = 0; tonnageIndex < this.tonnages.length; tonnageIndex++) {
-				  const tonnage = this.tonnages[tonnageIndex];
-	 
-				  const price = this.prices[this.selectedType]?.[month]?.[tonnage] || '-';
-				  this.priceArray.push(price);
-				}
-			 }
-			 const calculationData = {
-				username: "Михаил",
-				month_name: this.selectedMonth,
-				raw_type_name: this.selectedType,
-				tonnage_value: this.selectedTonnage,
-				price: this.calculatedPrice
-			 };
-	 
-			 fetch('/api/v1/history', {
-				method: 'POST',
-				headers: {
-					 'Content-Type': 'application/json',
-				},
-				body: calculationData
-		  })
-		  .then(response => {
-				if (response.ok) {
-					 console.log('Данные успешно сохранены');
-				} else {
-					 console.error('Ошибка при сохранении данных:', response.status);
-				}
-		  })
-		  .catch(error => {
-				console.error('Ошибка:', error);
-		  });
+          if (this.calculatedPrice == null) {
+            this.hasSentRequest = true;
+            this.showErrorModal = true;
+          }
+          for (
+            let monthIndex = 0;
+            monthIndex < this.months.length;
+            monthIndex++
+          ) {
+            const month = this.months[monthIndex];
+
+            for (
+              let tonnageIndex = 0;
+              tonnageIndex < this.tonnages.length;
+              tonnageIndex++
+            ) {
+              const tonnage = this.tonnages[tonnageIndex];
+
+              const price =
+                this.prices[this.selectedType]?.[month]?.[tonnage] || "-";
+              this.priceArray.push(price);
+            }
+          }
+
+          fetch("/api/v1/history", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              month_name: this.selectedMonth,
+              raw_type_name: this.selectedType,
+              tonnage_value: this.selectedTonnage,
+              price: this.calculatedPrice,
+            }),
+          })
+            .then((response) => {
+              if (response.ok) {
+                console.log("Данные успешно сохранены");
+              } else {
+                console.error("Ошибка при сохранении данных:", response.status);
+              }
+            })
+            .catch((error) => {
+              console.error("Произошла ошибка:", error);
+            });
         } else {
           const missingParams = [];
           if (!this.selectedMonth) missingParams.push("месяц");
@@ -95,16 +102,16 @@ new Vue({
       this.selectedType = "";
       this.selectedTonnage = "";
       this.priceArray = [];
-		this.hasSentRequest = false;
+      this.hasSentRequest = false;
     },
 
     closeErrorParams() {
       this.showErrorParams = false;
     },
 
-	 closeErrorModal() {
+    closeErrorModal() {
       this.showErrorModal = false;
-		this.reset();
+      this.reset();
     },
 
     openForm() {

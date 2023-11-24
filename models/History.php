@@ -2,28 +2,21 @@
 
 namespace app\models;
 
+use yii\db\ActiveRecord;
 
-class History extends \yii\db\ActiveRecord
+
+class History extends ActiveRecord
 {
-	public $username;
-    public $month_name;
-    public $raw_type_name;
-    public $tonnage_value;
-    public $price;
-	 
-	/**
-  * Summary of primaryKey
-  * @return array
-  */
-  public static function primaryKey()
-  {
-		return ['id'];
-  }
 
-  public function rules()
-    {
-        return [
-			[['username', 'month_name', 'raw_type_name', 'tonnage_value', 'price'], 'required'],
-        ];
-    }
+	public static function tableName()
+	{
+		return 'history';
+	}
+
+	public function rules()
+	{
+		return [
+			[['month_name', 'raw_type_name', 'tonnage_value', 'price'], 'required'],
+		];
+	}
 }

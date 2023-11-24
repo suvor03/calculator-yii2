@@ -61,18 +61,18 @@ class TonnagesController extends ActiveController
 	public function actionDelete($value)
 	{
 		$tonnage = Tonnages::findOne(['value' => $value]);
-    if ($tonnage) {
-        try {
-            $tonnage->delete();
-            Yii::$app->response->statusCode = 203;
-            return ['success' => true, 'message' => 'Тоннаж успешно удален'];
-        } catch (\Exception $e) {
-            Yii::$app->response->statusCode = 500;
-            return ['success' => false, 'message' => 'Ошибка при удалении тоннажа: ' . $e->getMessage()];
-        }
-    } else {
-        Yii::$app->response->statusCode = 404;
-        return ['success' => false, 'message' => 'Тоннаж со значением ' . $value . ' не найден'];
-    }
+		if ($tonnage) {
+			try {
+				$tonnage->delete();
+				Yii::$app->response->statusCode = 203;
+				return ['success' => true, 'message' => 'Тоннаж успешно удален'];
+			} catch (\Exception $e) {
+				Yii::$app->response->statusCode = 500;
+				return ['success' => false, 'message' => 'Ошибка при удалении тоннажа: ' . $e->getMessage()];
+			}
+		} else {
+			Yii::$app->response->statusCode = 404;
+			return ['success' => false, 'message' => 'Тоннаж со значением ' . $value . ' не найден'];
+		}
 	}
 }
